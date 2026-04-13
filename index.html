@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sakhi Birthday 🎂</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #ffe4ec, #ffffff);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+}
+
+#countdown {
+  font-size: 90px;
+  font-weight: bold;
+  color: #ff4d88;
+  animation: pop 1s infinite;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.text {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #ff6699;
+}
+
+.gift-box {
+  font-size: 100px;
+  cursor: pointer;
+}
+
+.teddies {
+  display: none;
+  font-size: 80px;
+  margin-top: 20px;
+}
+
+.message {
+  display: none;
+  margin-top: 20px;
+  font-size: 20px;
+  color: #ff4d88;
+}
+
+.btn {
+  display: none;
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4d88;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cake {
+  font-size: 150px;
+}
+
+.firework {
+  position: absolute;
+  font-size: 30px;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  from { transform: scale(0); opacity: 1; }
+  to { transform: scale(2); opacity: 0; }
+}
+
+.balloon {
+  font-size: 60px;
+  cursor: pointer;
+  margin: 20px;
+  display: inline-block;
+}
+
+.result-text {
+  font-size: 22px;
+  color: #ff4d88;
+  margin-top: 20px;
+}
+
+.final-text {
+  font-size: 26px;
+  color: #ff4d88;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="main">
+  <div id="countdown">10</div>
+  <div class="text">Counting your best moments..</div>
+</div>
+
+<script>
+let timeLeft = 10;
+const main = document.getElementById("main");
+
+const timer = setInterval(() => {
+  timeLeft--;
+  document.getElementById("countdown").textContent = timeLeft;
+
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+
+    main.innerHTML = `
+      <div class="gift-box" onclick="openGift()">🎁</div>
+      <div class="text">Tap on gift</div>
+
+      <div id="teddies" class="teddies">🧸 🧸</div>
+
+      <div id="msg" class="message">
+        A cutiepie was born today, 27 years ago 💖<br>
+        Yes, It's YOU! 😄<br>
+        A little surprise awaits...
+      </div>
+
+      <button id="btn" class="btn" onclick="startSurprise()">Start a Surprise</button>
+    `;
+  }
+}, 1000);
+
+function openGift() {
+  document.getElementById("teddies").style.display = "block";
+  document.getElementById("msg").style.display = "block";
+  document.getElementById("btn").style.display = "inline-block";
+}
+
+function startSurprise() {
+  main.innerHTML = `
+    <div class="cake">🎂</div>
+    <div class="text" style="font-size:30px;">Happy Birthday Sakhi!! 💖</div>
+    <button class="btn" style="display:inline-block;" onclick="dessertTime()">Dessert Time!!</button>
+  `;
+}
+
+function dessertTime() {
+  for (let i = 0; i < 30; i++) {
+    let fw = document.createElement("div");
+    fw.className = "firework";
+    fw.innerHTML = "✨";
+
+    fw.style.left = Math.random() * window.innerWidth + "px";
+    fw.style.top = Math.random() * window.innerHeight + "px";
+
+    document.body.appendChild(fw);
+    setTimeout(() => fw.remove(), 1000);
+  }
+
+  setTimeout(() => {
+    main.innerHTML += `<br><button class="btn" style="display:inline-block;" onclick="balloonGame()">Pop the Balloons</button>`;
+  }, 800);
+}
+
+let poppedCount = 0;
+
+function balloonGame() {
+  main.innerHTML = `
+    <div class="text" style="font-size:28px;">Pop the Balloons!! 🎈</div>
+
+    <div>
+      <span class="balloon" onclick="popBalloon(this, 'YOU')">🎈</span>
+      <span class="balloon" onclick="popBalloon(this, 'are')">🎈</span>
+      <span class="balloon" onclick="popBalloon(this, 'Really')">🎈</span>
+      <span class="balloon" onclick="popBalloon(this, 'Cute')">🎈</span>
+    </div>
+
+    <div id="result" class="result-text"></div>
+  `;
+}
+
+function popBalloon(el, text) {
+  el.innerHTML = "💥";
+  el.style.pointerEvents = "none";
+
+  document.getElementById("result").innerHTML += text + " ";
+  poppedCount++;
+
+  if (poppedCount === 4) {
+    setTimeout(() => {
+      document.getElementById("result").innerHTML += "<br><br>Wow !, You really did it. 💖";
+
+      setTimeout(() => {
+        showMemories();
+      }, 1500);
+    }, 500);
+  }
+}
+
+function showMemories() {
+  main.innerHTML = `
+    <div class="text" style="font-size:30px;">Some Special Moments 💖</div>
+
+    <img src="your-photo.jpg" 
+         style="width:250px; height:300px; margin-top:20px; border-radius:20px; object-fit:cover;">
+
+    <br>
+
+    <button class="btn" style="display:inline-block;" onclick="lastSurprise()">
+      Message for you 💌
+    </button>
+  `;
+}
+
+function lastSurprise() {
+  main.innerHTML = `
+    <div class="text" style="font-size:28px;">One last surprise for you 🎁</div>
+    <div class="gift-box" onclick="finalPage()">🎁</div>
+  `;
+}
+
+function finalPage() {
+  main.innerHTML = `
+    <img src="https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyanJmZGxiY3RycHc5cWJ0MzNoNW1ic3M5dHRnenNuMDIwbGMxY2w3NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IVK6xNBpEAHYyOdghk/giphy.gif" 
+         style="width:200px; border-radius:20px;">
+
+    <div class="final-text">
+      Lots of love to you! 💖<br><br>
+      Many many happy returns of the day 🎂<br><br>
+      Hope you loved it!! 😊
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
